@@ -1,0 +1,342 @@
+
+/* Para ocultar el scroll pero permitir el desplazamiento */
+html {
+  overflow: -moz-scrollbars-none;  /* Firefox antiguo */
+  -ms-overflow-style: none;        /* Internet Explorer y Edge */
+  scrollbar-width: none;           /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari y Edge */
+}
+.side-panel::-webkit-scrollbar{
+  display: none;
+}
+/*estilos de la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid #fced0e;
+  padding: 8px;
+  text-align: left;
+}
+th {
+  background-color: #4011b6;
+  color:white
+}
+tr:hover {
+  background-color: #61f8a2;
+}
+/* Secciones generales */
+section {
+  
+  width: 90%;
+  padding: 10px;
+  margin-top: 5px;
+  text-align: justify;
+}
+#inicio{
+  
+ margin-top: 100px;
+}
+/* Estilo general */
+body {
+  margin: 0;
+   /* Gris claro */
+  font-family: Arial, sans-serif;
+  overflow: auto;
+}
+
+/* Estilo del menú de navegación */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #003366;
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  z-index: 1;
+  overflow: scroll;
+  scrollbar-width: none;
+ 
+}
+svg {
+  border: 2px solid black;
+  display: block;
+  margin: 0 auto;
+}
+#score {
+  text-align: center;
+}
+.exit {
+  fill: green;
+  stroke: black;
+  stroke-width: 2;
+}
+.player {
+  fill: blue;
+}
+.wall {
+  stroke: black;
+  stroke-width: 5;
+}
+.path {
+  fill: white;
+}
+h1 {
+  font-size: 36px;   /* Tamaño del título principal */
+  color: #003366;    /* Azul oscuro para destacar */
+  text-align: center;
+}
+
+h2 {
+  font-size: 28px;   /* Tamaño del subtítulo */
+  color: #4F772D;    /* Verde oscuro */
+  text-align: center;
+}
+
+h3, h4 {
+text-align: center;
+  font-size: 24px;   /* Tamaño para subtítulos más pequeños */
+  color: #003366;   /* Azul oscuro */
+}
+
+/* Párrafos */
+p {
+text-align: justify;
+  font-size: 18px;   /* Tamaño del cuerpo de texto */
+  color: #333333;    /* Gris oscuro para fácil lectura */
+  line-height: 1.6;  /* Espaciado entre líneas */
+  border:  4px solid rgb(94, 184, 66);
+  border-radius: 15px;
+}
+/* Estilo del logo */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.logo h1 {
+  color: #FFD700;
+  padding: 0;
+  margin: 0 10px;
+}
+
+.logo img {
+  width: 80px;
+  height: 80px;
+}
+
+/* Menú de navegación */
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+nav ul li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+nav ul li a:hover {
+  background-color: #4F772D;
+}
+
+/* Estilo del botón hamburguesa */
+.menu-button {
+  background-color: #038546;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Estilo del panel lateral */ 
+.side-panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 700px;
+  height: 100%;
+  background-color: #c7bcfa;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s ease;
+  padding: 20px;
+  z-index: 1000;
+  overflow-y: scroll;
+  
+}
+
+.side-panel.open {
+  right: 0;
+}
+
+.panel-content h4, .panel-content h3 {
+  color: #003366;
+}
+
+.side-panel-button {
+  background-color: #4F772D;
+  color: white;
+  padding: 10px 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  
+
+}
+.side-panel-buttona {
+  background-color: #4F772D;
+  color: white;
+  padding: 10px 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  position: fixed;
+  writing-mode: vertical-rl;
+  left: 97%;
+  top: 300px;
+  
+  
+
+}
+
+.side-panel-button:hover {
+  background-color: #003366;
+}
+
+/* Estilo del editor */
+#editor-container {
+  width: 100%;
+  max-width: 800px; /* Ajusta según tus necesidades */
+  margin: 0 auto;
+}
+
+.editor-wrapper {
+  display: flex;
+  border: 1px solid #4c00ff;
+  background-color: #c7bcfa;
+  height: 450px;
+}
+
+.line-numbers {
+  padding: 10px;
+  background-color: #e0d9f7;
+  border-right: 1px solid #4c00ff;
+  text-align: right;
+  user-select: none; /* Evita que se seleccione el texto de los números */
+  font-family: monospace;
+  overflow: hidden;
+  
+}
+
+#editor {
+  flex-grow: 1; /* Ocupa el resto del espacio disponible */
+  padding: 10px;
+  border: none;
+  background-color: #c7bcfa;
+  resize: none; /* Evita que se redimensione */
+  font-family: monospace; /* Estilo de fuente para código */
+  outline: none; /* Quita el contorno al enfocar */
+}
+
+#editor:focus {
+  background-color: #e9e5ff; /* Cambia el color al enfocar */
+}
+
+/* Estilo de la consola */
+#console {
+  width: 99%;
+  height: 200px;
+  background-color: #c7bcfa;
+  overflow-y: auto;
+  border: 1px solid #4c00ff;
+  padding: 10px;
+}
+
+#runButton {
+  margin-top: 10px;
+  background-color: #4F772D;
+  color: white;
+}
+.my-btn{
+  margin-top: 10px;
+  background-color: #4F772D;
+  color: white;
+
+}
+.btn:hover{
+  background-color: #003366;
+}
+#runButton:hover {
+  background-color: #003366;
+}
+.gallery-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* Ajusta según tus necesidades */
+  margin: 0 auto;
+  overflow: hidden; /* Oculta imágenes fuera de la vista */
+}
+
+.gallery-container img {
+  width: 100%;
+  height: 400px;
+  transition: opacity 1s ease; /* Transición suave */
+  position: relative;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  .menu-button {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  nav ul {
+    display: none;
+    flex-direction: column;
+  }
+
+  nav ul.active {
+    display: flex;
+  }
+
+  nav ul li {
+    width: 100%;
+  }
+
+  nav ul li a {
+    text-align: left;
+    padding: 14px 20px;
+  }
+  .side-panel {
+    width: 300px; /* Asegurar que el editor y la consola se ajusten al ancho del panel lateral */
+  }
+  .side-panel-buttona {
+  
+    left: 95%;
+    
+    
+    
+  
+  }
+}

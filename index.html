@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practicar JavaScript</title>
+  <link rel="stylesheet" href="style.css?33">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+  <!-- librerias de la pagiana web-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js?21"></script>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+
+
+
+
+</head>
+<body style="background-color:#c7bcfa;" >
+  <!-- Menú de navegación horizontal -->
+  <nav id="nav">
+    <!-- Botón hamburguesa -->
+    <div class="logo">
+      <img name="logoi" src="images.png" alt="Logo">
+      <h1>Practica JavaScript</h1>
+    </div>
+    <button id="menu-button" class="menu-button">☰ Menú</button>
+
+    <!-- Lista de navegación -->
+    <ul class="nav-list" id="nav-links">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#ejercicios">Practica</a></li>
+      <li><a href="#librerias">Librerias CDN</a></li>
+      <li><a href="#practicalibre">Practica Libre</a></li>
+    </ul>
+  </nav>
+
+  <!-- Botón para abrir el panel lateral -->
+  <button class="side-panel-buttona" id="sidePanelButton">Abrir Panel</button>
+
+  <!-- Panel lateral con el editor de código y consola -->
+  <div class="side-panel" id="sidePanel">
+    <div class="panel-content">
+      <h3>Editor de Código y Consola</h3>
+      
+      <!-- Contenedor del editor de código -->
+<div id="editor-container">
+  <div class="editor-wrapper">
+    <div class="line-numbers"></div>
+    <textarea id="editor" placeholder="Escribe tu código aquí..."></textarea>
+  </div>
+  <button id="runButton">Ejecutar</button>
+  <button id="downloadButton" class="my-btn">Descargar Código (.js)</button>
+ 
+  <script>
+    // Obtener los elementos
+    const edito = document.getElementById("editor");
+    const downloadButton = document.getElementById("downloadButton");
+
+    // Función para descargar el código como archivo .js
+    downloadButton.addEventListener("click", function() {
+        // Obtener el código escrito en el editor
+        const code = edito.value;
+
+        // Crear un Blob con el contenido del código y el tipo MIME adecuado
+        const blob = new Blob([code], { type: "application/javascript" });
+
+        // Crear un enlace de descarga
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "codigo.js"; // Nombre del archivo a descargar
+
+        // Añadir el enlace al DOM
+        document.body.appendChild(link);
+
+        // Simular un clic en el enlace para iniciar la descarga
+        link.click();
+
+        // Eliminar el enlace del DOM después de la descarga
+        document.body.removeChild(link);
+    });
+</script>
+</div>
+<script>
+  const textarea = document.getElementById('editor');
+  const lineNumbers = document.querySelector('.line-numbers');
+
+  // Función para actualizar los números de línea
+  const updateLineNumbers = () => {
+    const lines = textarea.value.split('\n').length;
+    lineNumbers.innerHTML = ''; // Limpiar los números de línea
+
+    // Generar los números de línea
+    for (let i = 1; i <= lines; i++) {
+      lineNumbers.innerHTML += i + '<br>';
+    }
+  };
+
+  // Sincronizar el scroll de los números de línea con el textarea
+  textarea.addEventListener('scroll', () => {
+    lineNumbers.scrollTop = textarea.scrollTop;
+  });
+
+  // Detectar el input en el textarea y actualizar los números de línea
+  textarea.addEventListener('input', () => {
+    updateLineNumbers(); // Actualizar los números de línea
+  });
+
+  // Inicializa los números de línea al cargar la página
+  updateLineNumbers();
+</script>
+
+      <!-- Consola donde se mostrará el resultado -->
+      <h4>
+        Consola 
+        <button id="toggleConsoleButton">Mostrar Consola</button>
+      </h4>
+      <div id="console" style="display: none; border: 1px solid black; padding: 10px; margin-top: 10px;"></div>
+
+      <!-- Botón para cerrar el panel lateral -->
+      <button class="side-panel-button" id="closeSidePanelButton">Cerrar Panel</button>
+    </div>
+  </div>
+
+  <!-- Sección de inicio -->
+  <section id="inicio">
+    <h2>Bienvenido a Aprende JavaScript</h2>
+    <h2>¿Que es JavaScript?</h2>
+    <p>JavaScript es un lenguaje de programación que se utiliza principalmente para crear páginas web interactivas. Es uno de los tres lenguajes fundamentales para el desarrollo web junto con HTML (estructura) y CSS (estilos). JavaScript permite agregar funcionalidades dinámicas y comportamientos a una página web, como:
+<br><br>
+      Interactividad con el usuario: Capturar eventos como clics, desplazamientos o introducción de datos en formularios y responder a ellos.
+<br> Manipulación del DOM (Document Object Model): JavaScript puede cambiar el contenido, la estructura y el estilo de una página web en tiempo real, por ejemplo, mostrando o ocultando elementos, modificando el contenido de una etiqueta, etc.
+<br>      Validación de formularios: Comprobar si los datos ingresados en un formulario son correctos antes de enviarlos al servidor.
+<br>      Actualizaciones dinámicas: Con JavaScript y tecnologías como AJAX, es posible cargar o actualizar datos en una página web sin necesidad de recargarla.
+<br>      Animaciones: Crear animaciones, como desplazamientos suaves, efectos visuales y transiciones.
+      Juegos y gráficos: Crear juegos y gráficos interactivos utilizando bibliotecas como Canvas o WebGL.
+      Características clave:
+      Interpretado: JavaScript es un lenguaje interpretado, lo que significa que el navegador lo ejecuta directamente sin necesidad de compilarlo previamente.
+      Basado en eventos: Muchas acciones en JavaScript dependen de eventos del usuario, como clics o teclas presionadas.
+      Lenguaje del lado del cliente y del servidor: Aunque tradicionalmente ha sido usado en el lado del cliente (navegador), también puede ejecutarse en el servidor con plataformas como Node.js.</p>
+      <div class="gallery-container">
+        <img id="galleryImage" src="js.jpg" alt="Gallery Image">
+      </div>  
+      <!--js para la trancision de imagenes-->
+      <script>const images = [
+        'js.jpg',
+        'js1.jpg',
+        'js3.png',
+        'js4.png'
+      ];
+      
+      let currentIndex = 0;
+      
+      function changeImage() {
+        const galleryImage = document.getElementById('galleryImage');
+        currentIndex = (currentIndex + 1) % images.length; // Cambia al siguiente índice
+        galleryImage.style.opacity = 0; // Hace que la imagen se desvanezca
+      
+        setTimeout(() => {
+          galleryImage.src = images[currentIndex]; // Cambia la imagen
+          galleryImage.style.opacity = 1; // Vuelve a mostrar la imagen
+        }, 1000); // Espera el tiempo de la transición
+      }
+      
+      // Cambia de imagen cada 3 segundos
+      setInterval(changeImage, 6000);
+      </script>
+    </section>
+
+  <!-- Sección del editor -->
+  <section id="ejercicios">
+    <h3 class="titulo" onclick="abrir('info1')"> Ejercicios basicos de JavaScript (da click)</h3>
+    <div class="info" id="info1"> 
+    <p>
+      <h1>Diferencias entre let, var y const</h1>
+      <table>
+        <thead>
+            <tr>
+                <th>Característica</th>
+                <th>var</th>
+                <th>let</th>
+                <th>const</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Ámbito (Scope)</td>
+                <td>Función</td>
+                <td>Bloque</td>
+                <td>Bloque</td>
+            </tr>
+            <tr>
+                <td>Hoisting</td>
+                <td>Sí, con inicialización <code>undefined</code></td>
+                <td>Sí, sin inicialización (Error si se accede antes de su declaración)</td>
+                <td>Sí, sin inicialización (Error si se accede antes de su declaración)</td>
+            </tr>
+            <tr>
+                <td>Redefinición</td>
+                <td>Permitida</td>
+                <td>No permitida en el mismo ámbito</td>
+                <td>No permitida</td>
+            </tr>
+            <tr>
+                <td>Reasignación</td>
+                <td>Permitida</td>
+                <td>Permitida</td>
+                <td>No permitida</td>
+            </tr>
+            <tr>
+                <td>Modificación de objetos</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>Permitida (dentro del objeto)</td>
+            </tr>
+        </tbody>
+    </table>
+    </p>
+    <p>
+      <h3>LET</h3>
+      <br>En estos problemas practicaremos los que son las variables con JavaScript en este caso usaremos que es let sirve para declarar variables con un alcance limitado al bloque,
+      y para imprimir el resultado en JavaScript se usara lo que es console.log() para imprimir el resultado. Tambien se utilizaran operadores matematicos como el +,-,*,/.
+      <br>
+      1.-Has hecho una compra y sabes el precio del producto y su iva. Haz un script que te calcule el precio total que vas a pagar por tu compra.
+      <br> 200€
+      <br> Iva: 21%
+      Te recuerdo que para calcular el total debes sumar al precio el resultado de multiplicasr precio por el iva y dividir por 100. (resultado te debe dar 242€)</p>
+      <br>
+      <p>2.-Para el siguiente ejercicio usaremos igual let para crear las variables pero de igual forma usaremos prompt() este nos servira para pedir que el usuario ingresar datos <br>
+        Un poco de interactividad. En este ejercicio debes escribir un programa que lea el nombre del usuario y salude con un "Hola" seguido del nombre del usuario.<br>
+
+        Para leer el nombre usa un prompt con un texto indicativo como "Escribe tu nombre"</p><br>
+        <h3>VAR</h3>
+        <p>Para los siguientes ejercicios son para practicar con var y las formas de recoger los datos en javascript donde mostrare una dos tablas para que sepas cual conviene utilizar en cierta situacion y te serviran para resolver los siguiente 
+          ejercicios
+          <table >
+            <thead>
+                <tr>
+                    <th>Tipo de Dato</th>
+                    <th>Descripción</th>
+                    <th>Ejemplo</th>
+                    <th>Características</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Number</code></td>
+                    <td>Representa números, tanto enteros como de punto flotante.</td>
+                    <td><code>let entero = 42;</code><br><code>let decimal = 3.14;</code></td>
+                    <td>- Precisión doble (64 bits).<br>- NaN para resultados indefinidos.</td>
+                </tr>
+                <tr>
+                    <td><code>String</code></td>
+                    <td>Representa texto.</td>
+                    <td><code>let texto = "Hola, mundo!";</code></td>
+                    <td>- Inmutables.<br>- Se pueden definir con comillas simples, dobles o invertidas (backticks).</td>
+                </tr>
+                <tr>
+                    <td><code>Boolean</code></td>
+                    <td>Representa valores de verdad: <code>true</code> o <code>false</code>.</td>
+                    <td><code>let esVerdadero = true;</code></td>
+                    <td>- Útil en condiciones y comparaciones.</td>
+                </tr>
+                <tr>
+                    <td><code>Object</code></td>
+                    <td>Estructuras que almacenan colecciones de datos.</td>
+                    <td><code>let persona = { nombre: "Juan", edad: 30 };</code></td>
+                    <td>- Pueden tener propiedades y métodos.<br>- Pueden ser anidados.</td>
+                </tr>
+                <tr>
+                    <td><code>Array</code></td>
+                    <td>Tipo especial de objeto que almacena listas de valores.</td>
+                    <td><code>let numeros = [1, 2, 3];</code></td>
+                    <td>- Elementos pueden ser de cualquier tipo.<br>- Ordenados por índice.</td>
+                </tr>
+                <tr>
+                    <td><code>Null</code></td>
+                    <td>Representa la ausencia intencionada de valor.</td>
+                    <td><code>let vacio = null;</code></td>
+                    <td>- Se usa para indicar que no hay valor.</td>
+                </tr>
+                <tr>
+                    <td><code>Undefined</code></td>
+                    <td>Indica que una variable ha sido declarada pero no se le ha asignado valor.</td>
+                    <td><code>let noDefinido;</code></td>
+                    <td>- Significa que la variable no tiene un valor asignado.</td>
+                </tr>
+                <tr>
+                    <td><code>Symbol</code></td>
+                    <td>Representa un identificador único e inmutable.</td>
+                    <td><code>const sim = Symbol("desc");</code></td>
+                    <td>- Útil para propiedades de objetos únicas.</td>
+                </tr>
+                <tr>
+                    <td><code>BigInt</code></td>
+                    <td>Permite trabajar con números enteros grandes.</td>
+                    <td><code>let grande = BigInt(9007199254740991);</code></td>
+                    <td>- Se usa para manejar enteros que exceden el límite de <code>Number</code>.</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+          <table>
+            <thead>
+                <tr>
+                    <th>Método</th>
+                    <th>Descripción</th>
+                    <th>Ejemplo</th>
+                    <th>Características</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>parseInt</code></td>
+                    <td>Convierte una cadena a un número entero.</td>
+                    <td><code>parseInt("42");</code></td>
+                    <td>- Trunca los decimales.<br>- Acepta un segundo parámetro para la base (<code>radix</code>).<br>- Devuelve <code>NaN</code> si no se puede convertir.</td>
+                </tr>
+                <tr>
+                    <td><code>parseFloat</code></td>
+                    <td>Convierte una cadena a un número de punto flotante.</td>
+                    <td><code>parseFloat("42.5");</code></td>
+                    <td>- Retorna el número como decimal.<br>- Acepta notación científica.<br>- Devuelve <code>NaN</code> si no se puede convertir.</td>
+                </tr>
+                <tr>
+                    <td><code>Number</code></td>
+                    <td>Convierte una cadena a un número (entero o flotante).</td>
+                    <td><code>Number("42");</code><br><code>Number("42.5");</code></td>
+                    <td>- Retorna <code>NaN</code> si la cadena no es un número válido.<br>- Acepta cadenas vacías, que se convierten en <code>0</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>+</code> (Operador unario)</td>
+                    <td>Convierte una cadena a un número utilizando el operador unario <code>+</code>.</td>
+                    <td><code>+"42";</code><br><code>+"42.5";</code></td>
+                    <td>- Retorna <code>NaN</code> si la cadena no es un número válido.<br>- Funciona igual que <code>Number()</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>Math.floor</code></td>
+                    <td>Redondea un número hacia abajo al entero más cercano.</td>
+                    <td><code>Math.floor(42.9);</code></td>
+                    <td>- Devuelve el entero más grande que es menor o igual al número.</td>
+                </tr>
+                <tr>
+                    <td><code>Math.ceil</code></td>
+                    <td>Redondea un número hacia arriba al entero más cercano.</td>
+                    <td><code>Math.ceil(42.1);</code></td>
+                    <td>- Devuelve el entero más pequeño que es mayor o igual al número.</td>
+                </tr>
+                <tr>
+                    <td><code>Math.round</code></td>
+                    <td>Redondea un número al entero más cercano.</td>
+                    <td><code>Math.round(42.5);</code></td>
+                    <td>- Si el decimal es <code>0.5</code> o mayor, redondea hacia arriba.</td>
+                </tr>
+                <tr>
+                    <td><code>toFixed()</code></td>
+                    <td>Convierte un número a una cadena, manteniendo un número específico de decimales.</td>
+                    <td><code>(42.12345).toFixed(2);</code></td>
+                    <td>- Retorna una cadena, no un número.<br>- Puede ser útil para mostrar decimales.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        </p>
+        <p>1.-En este ejercicio vas a pedir al usuario que teclee tres números enteros y el script mostrará como resultado el valor medio de los tres.<br>
+          Recuerda que la media de tres números se calcula sumando los tres y dividiendo entre 3</p>
+       <br><p>2.-Ejercicio: Cálculo de Páginas para Imprimir<br>
+        Escribe un script que calcule el número total de páginas necesarias para imprimir una lista de documentos. Supongamos que tienes una cantidad específica de documentos y que cada página solo puede contener un máximo de 5 documentos.
+        <br>
+        Instrucciones:
+        <br>Pide al usuario que ingrese el número total de documentos.
+        <br>Usa Math.ceil para calcular cuántas páginas completas se necesitarán.
+        Imprime el resultado en la consola.</p>   
+
+        <br> <p>3.-Ejercicio: Análisis de Números en un Array
+          <br>Escribe un script que reciba un array de números y realice las siguientes operaciones:
+          
+         <br> Encuentre y muestre el número más grande del array.
+         <br> Encuentre y muestre el número más pequeño del array.
+         <br> Calcule y muestre el promedio de los números en el array.
+         <br> Instrucciones:
+         <br> Crea un array llamado numeros con al menos 5 elementos numéricos.
+        <br>  Usa métodos como Math.max, Math.min y un bucle for o reduce para realizar los cálculos.
+         <br> Muestra los resultados en la consola.
+         <br> Ejemplo de ejecución:
+         <br> Si el array es [10, 5, 8, 20, 2], el script debería:
+          
+         <br> Mostrar El número más grande es 20.
+         <br> Mostrar El número más pequeño es 2.
+         <br> Mostrar El promedio es 9.</p>
+
+    </div>
+    <h3 class="titulo" onclick="abrir('info2')">Ejercicios con ciclos</h3>
+    <div class="info" id="info2">
+
+      <p>Propósito de los bucles:
+        <br>Repetir acciones: Ejecutar un bloque de código un número específico de veces.
+       <br> Recorrer estructuras de datos: Iterar sobre elementos de arrays, objetos o listas para acceder y manipular sus valores.
+       <br> Automatizar procesos: Realizar operaciones repetitivas sin tener que escribir manualmente el mismo código múltiples veces.</p><br>
+       <table>
+        <thead>
+            <tr>
+                <th>Tipo de Bucle</th>
+                <th>Descripción</th>
+                <th>Uso Común</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>for</code></td>
+                <td>Ideal cuando se conoce la cantidad exacta de veces que se debe ejecutar el código.</td>
+                <td>Iterar sobre un array con un número definido de elementos.</td>
+            </tr>
+            <tr>
+                <td><code>while</code></td>
+                <td>Ejecuta un bloque de código mientras una condición específica se mantenga verdadera.</td>
+                <td>Cuando no se sabe cuántas veces se ejecutará el código, como esperar una condición externa.</td>
+            </tr>
+            <tr>
+                <td><code>do...while</code></td>
+                <td>Ejecuta un bloque de código al menos una vez y luego repite el bloque mientras la condición especificada sea verdadera.</td>
+                <td>Cuando se necesita asegurarse de que el bloque de código se ejecute al menos una vez, como en la validación de entradas.</td>
+            </tr>
+            <tr>
+                <td><code>forEach</code></td>
+                <td>Método utilizado para iterar sobre los elementos de un array.</td>
+                <td>Iterar sobre un array y realizar una operación en cada elemento.</td>
+            </tr>
+            <tr>
+                <td><code>for...of</code></td>
+                <td>Método utilizado para iterar sobre los elementos de un iterable (como un array o una cadena).</td>
+                <td>Cuando se desea recorrer los valores de un iterable sin preocuparse por los índices.</td>
+            </tr>
+        </tbody>
+    </table>
+       <br>
+       <p>for loop: Ideal cuando se conoce la cantidad exacta de veces que se debe ejecutar el código.
+        Ejercicio 1: Imprimir los números del 1 al 10
+       <br> Escribe un código que utilice un bucle for para imprimir los números del 1 al 10 en la consola.
+
+        <br>Instrucciones:
+
+       <br>Crea un bucle for que comience en 1 y termine en 10.
+       <br> En cada iteración, imprime el valor de la variable de control en la consola.
+       </p>
+       <br><p>Ejercicio 2: Calcular la suma de los primeros 100 números naturales<br>
+        <br>Escribe un código que utilice un bucle for para calcular la suma de los primeros 100 números naturales e imprime el resultado.
+        
+        <br>Instrucciones:
+        
+        <br>Crea un bucle for que comience en 1 y termine en 100.
+        <br>Suma cada número al total acumulado en cada iteración.
+        <br>Al finalizar el bucle, imprime el resultado de la suma.</p>
+        <br>
+        <p>while loop: Ejecuta un bloque de código mientras una condición específica se mantenga verdadera.
+          <br>Ejercicio 1: Contar de 1 a 10
+        <br>  Escribe un código que utilice un bucle while para contar de 1 a 10 e imprimir cada número en la consola.
+          
+         <br> Instrucciones:
+          
+         <br> Inicializa una variable en 1.
+         <br> Usa un bucle while que se ejecute mientras la variable sea menor o igual a 10.
+         <br> En cada iteración, imprime el valor de la variable y luego incrementa su valor en 1.
+        </p><br>
+        <p>Ejercicio 2: Sumar números hasta que el usuario ingrese 0
+          <br>Escribe un código que utilice un bucle while para sumar números ingresados por el usuario. El bucle debe continuar hasta que el usuario ingrese 0. Al final, imprime la suma total.
+          
+          <br>Instrucciones:
+          
+         <br> Inicializa una variable suma en 0.
+          <br>Usa un bucle while que se ejecute mientras el usuario no ingrese 0.
+         <br> Dentro del bucle, solicita al usuario que ingrese un número y conviértelo a un número entero.
+          <br>Agrega el número ingresado a la variable suma.
+          <br>Al finalizar el bucle, imprime la suma total.</p>
+          <br>
+
+    <p>forEach loop:
+    Método utilizado para iterar sobre los elementos de un array.
+<br>
+    Ejercicio 1: Imprimir cada elemento de un array
+    <br>
+        Escribe un código que utilice el método forEach para imprimir cada elemento de un array de frutas en la consola.
+        <br>Instrucciones:
+        <br>1. Crea un array con varios nombres de frutas.
+        <br>2. Usa el método forEach para recorrer el array e imprimir cada fruta.
+    </p>
+
+    <p>Ejercicio 2: Calcular la longitud de cada palabra en un array
+    
+        Escribe un código que utilice el método forEach para calcular y mostrar la longitud de cada palabra en un array.
+        <br>Instrucciones:
+        <br>1. Crea un array de palabras.
+        <br>2. Usa el método forEach para recorrer el array y almacenar la longitud de cada palabra en un nuevo array.
+        <br>3. Imprime el nuevo array con las longitudes.
+    </p>
+
+    <p>for...of loop:
+    Método utilizado para iterar sobre los elementos de un iterable (como un array o una cadena).
+
+    Ejercicio 1: Imprimir los elementos de un array de números
+    
+        Escribe un código que utilice un bucle for...of para imprimir cada número de un array en la consola.
+        <br>Instrucciones:
+        <br>1. Crea un array con varios números.
+        <br>2. Usa un bucle for...of para recorrer el array e imprimir cada número.
+    </p>
+
+    <p>Ejercicio 2: Calcular la suma de los elementos de un array
+    
+        Escribe un código que utilice un bucle for...of para calcular la suma de todos los elementos de un array de números.
+        <br>Instrucciones:
+        <br>1. Crea un array con varios números.
+        <br>2. Usa un bucle for...of para sumar todos los números en una variable acumuladora.
+        <br>3. Imprime el resultado de la suma.
+    </p>
+
+    </div>
+  </section>
+  <section id="librerias">
+    <h3 class="titulo" onclick="abrir('info3')"> Librerias JavaScript CDN</h3>
+    <div class="info" id="info3">
+    <p>
+      Las bibliotecas CDN (Content Delivery Network) en JavaScript son versiones alojadas en la nube de bibliotecas y archivos JavaScript populares (como jQuery, React, Bootstrap, etc.) que puedes integrar en tus proyectos mediante enlaces directos. Al incluir una biblioteca desde un CDN en lugar de alojarla localmente en tu servidor o proyecto, obtienes beneficios como:
+      
+      Mejor rendimiento y carga más rápida: Los CDN están distribuidos en múltiples ubicaciones alrededor del mundo. Cuando un usuario accede a tu sitio, se carga la biblioteca desde el servidor más cercano, reduciendo el tiempo de carga.
+      
+      Aprovechar el caché del navegador: Como muchos sitios usan las mismas versiones de bibliotecas populares (por ejemplo, jQuery), los navegadores suelen tener esos archivos ya en caché. Si un usuario ya cargó la biblioteca de un CDN en otro sitio, se evitará volver a descargarla, mejorando el rendimiento.
+      
+      Reducción del ancho de banda en tu servidor: Al cargar las bibliotecas desde un CDN, reduces la carga en tu propio servidor, ya que estos archivos se cargan desde el CDN en lugar de consumir ancho de banda en tu servidor.
+      
+      Actualización fácil: Las bibliotecas en los CDN suelen actualizarse rápidamente. Los desarrolladores pueden acceder a nuevas versiones cambiando solo el enlace.</p>
+    <br>
+    <h2>Ejemplos de Bibliotecas CDN</h2>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Librería</th>
+        <th>Propósito</th>
+        <th>Enlace CDN</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>jQuery</td>
+        <td>Manipulación del DOM, animaciones, AJAX</td>
+        <td><code>&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"&gt;&lt;/script&gt;</code></td>
+      </tr>
+      <tr>
+        <td>React</td>
+        <td>Construcción de interfaces de usuario</td>
+        <td><code>&lt;script src="https://unpkg.com/react@17/umd/react.production.min.js"&gt;&lt;/script&gt;</code></td>
+      </tr>
+      <tr>
+        <td>ReactDOM</td>
+        <td>Complemento para React, para renderizar en el DOM</td>
+        <td><code>&lt;script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"&gt;&lt;/script&gt;</code></td>
+      </tr>
+      <tr>
+        <td>Vue.js</td>
+        <td>Framework progresivo para interfaces de usuario</td>
+        <td><code>&lt;script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"&gt;&lt;/script&gt;</code></td>
+      </tr>
+      <tr>
+        <td>Bootstrap</td>
+        <td>CSS y componentes para diseño responsivo</td>
+        <td><code>&lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"&gt;</code></td>
+      </tr>
+      <tr>
+        <td>LUXON</td>
+        <td>Utilidades de manipulación de fechas</td>
+        <td>
+          <code>
+            &lt;script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"&gt;&lt;/script&gt;
+          </code>
+        </td>
+      </tr>
+      <tr>
+        <td>D3.js</td>
+        <td>Visualización de datos</td>
+        <td><code>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js"&gt;&lt;/script&gt;</code></td>
+      </tr>
+      <tr>
+        <td>Axios</td>
+        <td>Cliente HTTP para solicitudes API</td>
+        <td><code>&lt;script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"&gt;&lt;/script&gt;</code></td>
+      </tr>
+      <tr>
+        <td>Chart.js</td>
+        <td>Gráficos y visualización de datos</td>
+        <td><code>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;</code></td>
+      </tr>
+      <tr>
+        <td>Animate.css</td>
+        <td>Animaciones CSS</td>
+        <td><code>&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"&gt;</code></td>
+      </tr>
+      <tr>
+        <td>Font Awesome</td>
+        <td>Íconos en CSS</td>
+        <td><code>&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"&gt;</code></td>
+      </tr>
+    </tbody>
+  </table>
+  Ejemplos con jQuery<br>
+    
+  <h2>Ejemplo de jQuery con JavaScript</h2>
+  <p id="texto">Este es un párrafo de ejemplo.<br></p>
+  <p>    CODIGO PARA EL EJEMPLO<br>
+    &lt;p id="texto"&gt;Este es un párrafo de ejemplo.&lt;/p&gt;<br>
+   &lt;button id="boton"&gt;Cambiar texto&lt;/button&gt;<br>
+   
+   &lt;script&gt;<br>
+   // Esperar a que el DOM esté completamente cargado<br>
+      $(document).ready(function() {<br>
+        // Arreglo de textos posibles<br>
+        const textos = [<br>
+          '¡Este es el primer texto!',<br>
+          '¡Este es el segundo texto!',<br>
+          '¡Este es el tercer texto!',<br>
+          '¡Este es el cuarto texto!',<br>
+          '¡Este es el quinto texto!'<br>
+        ];<br>
+    
+        // Agregar un evento de clic al botón<br>
+        $('#boton-ejemplo').click(function() {<br>
+          // Elegir un índice aleatorio del arreglo<br>
+          const indiceAleatorio = Math.floor(Math.random() * textos.length);<br>
+          
+          // Obtener el texto aleatorio y mostrarlo en el párrafo<br>
+          $('#texto').text(textos[indiceAleatorio]);<br>
+        });<br>
+      });<br>
+   &lt;/script&gt;</p>
+    <!-- Botón con un id único para la demostración -->
+    <button id="boton-ejemplo">Cambiar texto</button>
+    <script>
+      // Esperar a que el DOM esté completamente cargado
+      $(document).ready(function() {
+        // Arreglo de textos posibles
+        const textos = [
+          '¡Este es el primer texto!',
+          '¡Este es el segundo texto!',
+          '¡Este es el tercer texto!',
+          '¡Este es el cuarto texto!',
+          '¡Este es el quinto texto!'
+        ];
+    
+        // Agregar un evento de clic al botón
+        $('#boton-ejemplo').click(function() {
+          // Elegir un índice aleatorio del arreglo
+          const indiceAleatorio = Math.floor(Math.random() * textos.length);
+          
+          // Obtener el texto aleatorio y mostrarlo en el párrafo
+          $('#texto').text(textos[indiceAleatorio]);
+        });
+      });
+    </script>
+
+    <p>EJERCICIO PARA PRACTICAR EN CASO DE QUE TENGAS DUDAS O QUIERES EXPERIMENTAR CON EL TEXTO DE PRUEBA TE DEJO EL LINK DE LA DOCUMENTACION YA QUE JQUERY FUNCIONA PARA 
+      MUCHAS COSAS MAS PARA TRABAJAR CON JSON O FORMULARIOS DE LAS PAGINAS <BR>
+    
+    JQUERY: <a href="https://api.jquery.com/category/ajax/">DOCUMENTACION JQUERY</a></p>
+
+      <!-- Usamos un <p> en lugar de un <h1> -->
+  <p id="miPalabra">Animación de Colores id es miPalabra</p>
+
+  <p>LIBRERIA REACT CDN <BR>
+    Documentacion:<a href="https://react.dev/" target="_blank">Documentacion</a><br>
+    En este ejemplo, crearemos una pequeña aplicación React donde se muestra un mensaje que cambia cuando el usuario hace clic en un botón. Usaremos 
+    React a través de un CDN, y no necesitamos un bundler como Webpack.
+    LOS CDN QUE UTILIZAREMOS SERA SERAN ESTOS<BR> &lt;script src="https://unpkg.com/react@17/umd/react.production.min.js"&gt; &lt;/script&gt;<BR>
+    &lt;script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"&gt;  &lt;/script&gt;
+  </p>
+  <p>Ejemplo de uso de React con CDN
+    Ejemplo complejo utilizando React.createElement (sin JSX):
+Este ejemplo incluye un formulario para agregar elementos a una lista, con un estado que mantiene la lista y permite agregar elementos dinámicamente.<br>
+  CODIGO DEL EJEMPLO <BR>
+    &lt;div id="root"&gt;&lt;/div&gt;<br>
+    
+    &lt;script type="text/javascript"&gt;<br>
+      // Crear un componente funcional de React<br>
+      const App = () =&gt; {<br>
+        // Estado para la lista de elementos<br>
+        const [items, setItems] = React.useState([]);<br>
+        // Estado para el texto del formulario<br>
+        const [newItem, setNewItem] = React.useState('');<br>
+    
+        // Función para agregar un nuevo elemento a la lista<br>
+        const addItem = () =&gt; {<br>
+          if (newItem) {<br>
+            setItems([...items, newItem]);<br>
+            setNewItem('');  // Limpiar el campo de entrada<br>
+          }<br>
+        };<br>
+    
+        // Función para manejar el cambio en el input<br>
+        const handleInputChange = (event) =&gt; {<br>
+          setNewItem(event.target.value);<br>
+        };<br>
+    
+        // Crear los elementos visuales usando React.createElement<br>
+        return React.createElement('div', null, <br>
+          React.createElement('h1', null, 'Lista de Tareas'),<br>
+          React.createElement('input', { <br>
+            type: 'text', <br>
+            value: newItem, <br>
+            onChange: handleInputChange, <br>
+            placeholder: 'Escribe una tarea...' <br>
+          }),<br>
+          React.createElement('button', { onClick: addItem }, 'Agregar tarea'),<br>
+          
+          // Mostrar la lista de tareas<br>
+          React.createElement('ul', null, <br>
+            items.map((item, index) =&gt; <br>
+              React.createElement('li', { key: index }, item)<br>
+            )<br>
+          )<br>
+        );<br>
+      };<br>
+    <br>
+      // Renderizar el componente en el div con id "root"<br>
+      ReactDOM.render(React.createElement(App), document.getElementById('root'));<br>
+    &lt;/script&gt;<br>
+  </p>
+  <div id="root"></div>
+
+<p>LIBERIA ANIMATE.CSS<BR>
+  Documentacion: <a href="https://animate.style/" target="_blank">Documentacion</a><br>
+  Propósito de la librería:<BR>
+  <BR>Animar elementos al cargarse: Puedes hacer que elementos como textos, imágenes o secciones de una página web aparezcan con efectos animados (por ejemplo, deslizamientos, desvanecimientos, rebotes).
+  <BR>Reaccionar a eventos: Las animaciones se pueden activar en respuesta a eventos como clics, desplazamientos, o movimientos del ratón.
+  <BR>Optimización del tiempo: En lugar de escribir código CSS complejo para crear animaciones, puedes usar las clases predefinidas de Animate.css.<BR>
+    <table>
+      <thead>
+          <tr>
+              <th>Categoría</th>
+              <th>Clases de Animación</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>Entradas (In)</td>
+              <td>animate__fadeIn, animate__fadeInDown, animate__fadeInUp, animate__fadeInLeft, animate__fadeInRight, animate__bounceIn, animate__zoomIn, animate__slideInDown, animate__slideInUp, animate__slideInLeft, animate__slideInRight</td>
+          </tr>
+          <tr>
+              <td>Salidas (Out)</td>
+              <td>animate__fadeOut, animate__fadeOutDown, animate__fadeOutUp, animate__fadeOutLeft, animate__fadeOutRight, animate__bounceOut, animate__zoomOut, animate__slideOutDown, animate__slideOutUp, animate__slideOutLeft, animate__slideOutRight</td>
+          </tr>
+          <tr>
+              <td>Atención</td>
+              <td>animate__bounce, animate__flash, animate__pulse, animate__rubberBand, animate__shakeX, animate__shakeY, animate__swing, animate__tada, animate__wobble, animate__jello, animate__heartBeat</td>
+          </tr>
+          <tr>
+              <td>Especiales</td>
+              <td>animate__hinge, animate__rollIn, animate__rollOut, animate__lightSpeedInLeft, animate__lightSpeedInRight, animate__lightSpeedOutLeft, animate__lightSpeedOutRight</td>
+          </tr>
+          <tr>
+              <td>Rotaciones</td>
+              <td>animate__rotateIn, animate__rotateInDownLeft, animate__rotateInDownRight, animate__rotateInUpLeft, animate__rotateInUpRight, animate__rotateOut, animate__rotateOutDownLeft, animate__rotateOutDownRight, animate__rotateOutUpLeft, animate__rotateOutUpRight</td>
+          </tr>
+          <tr>
+              <td>Zoom</td>
+              <td>animate__zoomIn, animate__zoomInDown, animate__zoomInUp, animate__zoomInLeft, animate__zoomInRight, animate__zoomOut, animate__zoomOutDown, animate__zoomOutUp, animate__zoomOutLeft, animate__zoomOutRight</td>
+          </tr>
+          <tr>
+              <td>Deslizamientos</td>
+              <td>animate__slideInDown, animate__slideInUp, animate__slideInLeft, animate__slideInRight, animate__slideOutDown, animate__slideOutUp, animate__slideOutLeft, animate__slideOutRight</td>
+          </tr>
+          <tr>
+              <td>Fades (Desvanecer)</td>
+              <td>animate__fadeIn, animate__fadeInDown, animate__fadeInUp, animate__fadeInLeft, animate__fadeInRight, animate__fadeOut, animate__fadeOutDown, animate__fadeOutUp, animate__fadeOutLeft, animate__fadeOutRight</td>
+          </tr>
+      </tbody>
+  </table>
+</p>
+<style>
+  .my-fast-animation {
+      animation-duration: 0.5s; /* Medio segundo */
+  }
+  .my-slow-animation {
+      animation-duration: 5s; /* Cinco segundos */
+  }
+</style>
+<p>EJEMPLO PARA CREAR LAS ANIMACIONES<BR>
+  DOCUMENTACION: https://animate.style/ <BR>
+  &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"&gt; <BR>
+  &lt;style&gt;<BR>
+      .my-fast-animation {<BR>
+          animation-duration: 0.5s; /* Medio segundo */<BR>
+      }<BR>
+      .my-slow-animation {<BR>
+          animation-duration: 5s; /* Cinco segundos */<BR>
+      }<BR>
+  &lt;/style&gt;<BR>
+&lt;/head&gt;<BR>
+&lt;body&gt;<BR>
+  &lt;h1 class="animate__animated animate__bounce my-fast-animation"&gt;¡Rápido!&lt;/h1&gt;<BR>
+  &lt;h1 class="animate__animated animate__fadeIn my-slow-animation"&gt;¡Lento!&lt;/h1&gt;<BR>
+  
+  <BR>
+    <h1 class="animate__animated animate__bounce animate__infinite my-fast-animation">¡Rápido e infinito!</h1>
+    <h1 class="animate__animated animate__fadeIn animate__infinite my-slow-animation">¡Lento e infinito!</h1>
+</p>
+<p>EJERCICIO O PRACTICA PARA PONER LAS ANIMACION Y SABER COMO LE PUEDES CAMBIAR LA CLASE DE UN H1 O P DE UN HTML CON JAVASCRIPT <BR>
+CON EL CUAL LO HAREMOS SELECIONANDO EL ID  DEL H1  Y DESPUES SE LE PONE EL .className = PARA MODIFICAR LA CLASE IGUALA LAS ANIMACION POR LOS CUALES PUEDES CAMBIAR ESTAN EN LA TABLA DE ARRIBA PERO EN CASO QUE TENGAS MAS
+DUDAS TENDRAS EL LINK DE LA DOCUMENTACION DONDE EL ID SERA animartexto</p>
+<h1 id="animartexto" class="animate__animated animate__bounce my-animation">¡Animación inicial!</h1>
+
+<p> LIBRERIA CHART.JS<BR>
+  ¿Qué es Chart.js?
+  Chart.js es una biblioteca de JavaScript simple y flexible que permite crear gráficos interactivos en aplicaciones web. Utiliza un elemento HTML canvas para renderizar los gráficos y es ampliamente utilizada debido a su facilidad de uso, diseño atractivo y compatibilidad con múltiples tipos de gráficos, como gráficos de líneas, barras, radar, pastel, burbuja y más.
+  <BR>
+  Instalación
+  Primero, necesitas agregar Chart.js a tu proyecto. Esto se puede hacer mediante un CDN o instalándolo con un gestor de paquetes como npm.<BR>
+  SI QUIERES MAS INFORMACION SOBRE ESTA LIBRERIA TE DEJARE EL LINK DE SU DOCUMENTACION PARA QUE LA ESTUDIES MAS A FONDO : <a href="https://www.chartjs.org/" target="_blank">documentacion</a>
+
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Componente</th>
+      <th>Descripción</th>
+      <th>Ejemplo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>type</code></td>
+      <td>Especifica el tipo de gráfico que deseas crear.</td>
+      <td><code>'bar'</code>, <code>'line'</code>, <code>'pie'</code>, <code>'doughnut'</code>, <code>'radar'</code>, <code>'polarArea'</code>, <code>'bubble'</code>, <code>'scatter'</code>.</td>
+    </tr>
+    <tr>
+      <td><code>data</code></td>
+      <td>Contiene los datos del gráfico, incluidos las etiquetas y conjuntos de datos.</td>
+      <td><code>{ labels: ['A', 'B'], datasets: [{ data: [10, 20] }] }</code></td>
+    </tr>
+    <tr>
+      <td><code>labels</code></td>
+      <td>Etiquetas del eje X (o categorías en gráficos circulares).</td>
+      <td><code>['Enero', 'Febrero', 'Marzo']</code></td>
+    </tr>
+    <tr>
+      <td><code>datasets</code></td>
+      <td>Configura los datos y el estilo para los gráficos.</td>
+      <td><code>{ label: 'Ventas', data: [30, 50, 70], backgroundColor: ['red', 'blue', 'green'] }</code></td>
+    </tr>
+    <tr>
+      <td><code>options</code></td>
+      <td>Configura el comportamiento y la apariencia general del gráfico.</td>
+      <td><code>{ scales: { y: { beginAtZero: true } } }</code></td>
+    </tr>
+    <tr>
+      <td><code>backgroundColor</code></td>
+      <td>Define el color de fondo de los elementos del gráfico.</td>
+      <td><code>['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)']</code></td>
+    </tr>
+    <tr>
+      <td><code>borderColor</code></td>
+      <td>Color del borde de los elementos.</td>
+      <td><code>['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)']</code></td>
+    </tr>
+    <tr>
+      <td><code>borderWidth</code></td>
+      <td>Grosor del borde de los elementos.</td>
+      <td><code>1</code></td>
+    </tr>
+    <tr>
+      <td><code>scales</code></td>
+      <td>Configura los ejes del gráfico (aplicable en ciertos tipos de gráficos).</td>
+      <td><code>{ y: { beginAtZero: true } }</code></td>
+    </tr>
+    <tr>
+      <td><code>responsive</code></td>
+      <td>Determina si el gráfico debe ajustarse automáticamente al tamaño del contenedor.</td>
+      <td><code>true</code> (por defecto).</td>
+    </tr>
+  </tbody>
+</table>
+<p>EJEMPLO DEL USO DE CHART CON SU CODIGO<BR>
+  &lt;div style="width: 50%; margin: auto;"&gt;<br>
+  &nbsp;&nbsp;&lt;canvas id="myChart"&gt;&lt;/canvas&gt;<br>
+  &lt;/div&gt;<br>
+  &lt;script&gt;<br>
+  const ctx = document.getElementById('myChart').getContext('2d');<br>
+  const myChart = new Chart(ctx, {<br>
+  &nbsp;&nbsp;type: 'bar', // Tipo de gráfico<br>
+  &nbsp;&nbsp;data: {<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;labels: ['Enero', 'Febrero', 'Marzo'], // Etiquetas del eje X<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;datasets: [{<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label: 'Ventas (USD)', // Etiqueta del dataset<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: [500, 700, 800], // Datos<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backgroundColor: [<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rgba(255, 99, 132, 0.2)',<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rgba(54, 162, 235, 0.2)',<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rgba(75, 192, 192, 0.2)'<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;borderColor: [<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rgba(255, 99, 132, 1)',<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rgba(54, 162, 235, 1)',<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rgba(75, 192, 192, 1)'<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;borderWidth: 1<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;}]<br>
+  &nbsp;&nbsp;},<br>
+  &nbsp;&nbsp;options: {<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;scales: {<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y: {<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beginAtZero: true // Empieza el eje Y desde cero<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;responsive: true // Gráfico ajustable<br>
+  &nbsp;&nbsp;}<br>
+  });<br>
+  &lt;/script&gt;<br>
+
+</p>
+<div style="width: 100%; max-width: 600px; margin: auto;">
+    <canvas id="myChart"></canvas>
+  </div>
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+  type: 'bar', // Tipo de gráfico
+  data: {
+    labels: ['Enero', 'Febrero', 'Marzo'], // Etiquetas del eje X
+    datasets: [{
+      label: 'Ventas (USD)', // Etiqueta del dataset
+      data: [500, 700, 800], // Datos
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(75, 192, 192, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(75, 192, 192, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false, // Permite que el gráfico se ajuste libremente
+    scales: {
+      y: {
+        beginAtZero: true // Empieza el eje Y desde cero
+      }
+    },
+    responsive: true // Gráfico ajustable
+  }
+});
+
+</script>
+<p>En este apartado podras crear o practicar con tus propios graficos recuerda que para que esto funcion se debe crear un div y un canvas en html para que funcion y se pueda poner el grafica como en el siguiente ejemplo donde tienen que tomar en cuenta para hacer la grafica<br>
+  &lt;div style="width: 100%; max-width: 600px; min-height: 300px; margin: auto;"&gt;<br>
+  &nbsp;&nbsp;&lt;canvas id="mypr"&gt;&lt;/canvas&gt;<br>
+  &lt;/div&gt;<br></p>
+
+  <div style="width: 100%; max-width: 600px; min-height: 300px; margin: auto;">
+    <canvas id="mypr"></canvas>
+  </div>
+<p>LIBRERIA LUXON<br>
+  Luxon es una librería de JavaScript para el manejo de fechas y horas. Fue creada por uno de los desarrolladores de Moment.js, y es una alternativa más moderna y eficiente para trabajar con fechas, horas, zonas horarias y formatos. Luxon se basa en el estándar Intl de JavaScript, lo que le da un rendimiento más rápido y una integración más fluida con las APIs nativas del navegador.
+<br>
+  Algunas de las características clave de Luxon son:
+ <br> 
+  Soporte completo de zonas horarias a través de la biblioteca IANA Time Zones.
+  <br>Formato de fechas y horas flexible, soportando varios formatos predeterminados o personalizados.
+  <br>Manipulación de fechas mediante operaciones como sumar o restar días, meses, horas, etc.
+  <br>Localización para trabajar con fechas en diferentes idiomas y configuraciones regionales.
+  <br>API fácil de usar que permite trabajar con objetos de fecha y hora de manera clara y concisa.</p>
+<br>
+<table>
+  <tr>
+      <th>Categoría</th>
+      <th>Función</th>
+      <th>Descripción</th>
+  </tr>
+  
+  <!-- Creación de objetos DateTime -->
+  <tr >
+      <td colspan="3"><center>Creación de objetos DateTime</center></td>
+  </tr>
+  <tr>
+      <td>Creación de fecha y hora actual</td>
+      <td>`DateTime.now()`</td>
+      <td>Obtiene la fecha y hora actual.</td>
+  </tr>
+  <tr>
+      <td>Crear fecha con la hora local</td>
+      <td> `DateTime.local()`</td>
+      <td>Crea un objeto DateTime con la fecha y hora local.</td>
+  </tr>
+  <tr>
+      <td>Crear fecha con la hora UTC</td>
+      <td> `DateTime.utc()`</td>
+      <td>Crea un objeto DateTime con la fecha y hora en formato UTC.</td>
+  </tr>
+  <tr>
+      <td>Crear a partir de una cadena ISO</td>
+      <td> `DateTime.fromISO()`</td>
+      <td>Crea un objeto DateTime a partir de una cadena ISO 8601.</td>
+  </tr>
+  <tr>
+      <td>Crear a partir de milisegundos</td>
+      <td> `DateTime.fromMillis()`</td>
+      <td>Crea un objeto DateTime a partir de milisegundos.</td>
+  </tr>
+  <tr>
+      <td>Crear a partir de un formato personalizado</td>
+      <td> `DateTime.fromFormat()`</td>
+      <td>Crea un objeto DateTime a partir de una cadena con un formato específico.</td>
+  </tr>
+  
+  <!-- Obtención de componentes -->
+  <tr>
+      <td colspan="3"><center>Obtención de componentes</center></td>
+  </tr>
+  <tr>
+      <td>Obtener el año</td>
+      <td> `DateTime.year`</td>
+      <td>Obtiene el año de la fecha.</td>
+  </tr>
+  <tr>
+      <td>Obtener el mes</td>
+      <td> `DateTime.month`</td>
+      <td>Obtiene el mes de la fecha (1-12).</td>
+  </tr>
+  <tr>
+      <td>Obtener el día</td>
+      <td> `DateTime.day`</td>
+      <td>Obtiene el día del mes.</td>
+  </tr>
+  <tr>
+      <td>Obtener el día de la semana</td>
+      <td> `DateTime.weekday`</td>
+      <td>Obtiene el día de la semana (1-7, donde 1 es lunes).</td>
+  </tr>
+  <tr>
+      <td>Obtener la hora</td>
+      <td> `DateTime.hour`</td>
+      <td>Obtiene la hora en formato de 24 horas.</td>
+  </tr>
+  <tr>
+      <td>Obtener los minutos</td>
+      <td> `DateTime.minute`</td>
+      <td>Obtiene los minutos de la hora.</td>
+  </tr>
+  <tr>
+      <td>Obtener los segundos</td>
+      <td> `DateTime.second`</td>
+      <td>Obtiene los segundos.</td>
+  </tr>
+  <tr>
+      <td>Obtener los milisegundos</td>
+      <td> `DateTime.millisecond`</td>
+      <td>Obtiene los milisegundos.</td>
+  </tr>
+
+  <!-- Formateo y salida -->
+  <tr>
+      <td colspan="3"><center>Formateo y salida</center></td>
+  </tr>
+  <tr>
+      <td>Convertir a formato personalizado</td>
+      <td> `DateTime.toFormat()`</td>
+      <td>Convierte la fecha a un formato personalizado.</td>
+  </tr>
+  <tr>
+      <td>Convertir a formato ISO</td>
+      <td> `DateTime.toISO()`</td>
+      <td>Convierte la fecha a formato ISO 8601.</td>
+  </tr>
+  <tr>
+      <td>Convertir a formato local</td>
+      <td> `DateTime.toLocaleString()`</td>
+      <td>Convierte la fecha a una cadena legible en la configuración regional.</td>
+  </tr>
+  <tr>
+      <td>Convertir a formato HTTP</td>
+      <td> `DateTime.toHTTP()`</td>
+      <td>Convierte la fecha a formato HTTP (RFC 2822).</td>
+  </tr>
+
+  <!-- Manipulación de fechas -->
+  <tr>
+      <td colspan="3"><center>Manipulación de fechas</center></td>
+  </tr>
+  <tr>
+      <td>Sumar tiempo a una fecha</td>
+      <td> `DateTime.plus()`</td>
+      <td>Suma una cantidad de tiempo a la fecha (por ejemplo, días, horas, meses).</td>
+  </tr>
+  <tr>
+      <td>Restar tiempo a una fecha</td>
+      <td> `DateTime.minus()`</td>
+      <td>Resta una cantidad de tiempo a la fecha (por ejemplo, días, horas, meses).</td>
+  </tr>
+  <tr>
+      <td>Modificar un componente de la fecha</td>
+      <td> `DateTime.set()`</td>
+      <td>Modifica un componente específico de la fecha (por ejemplo, año, mes, hora).</td>
+  </tr>
+  <tr>
+      <td>Establecer al inicio de una unidad</td>
+      <td> `DateTime.startOf()`</td>
+      <td>Establece la fecha al inicio de la unidad de tiempo (por ejemplo, primer día del mes).</td>
+  </tr>
+  <tr>
+      <td>Establecer al final de una unidad</td>
+      <td> `DateTime.endOf()`</td>
+      <td>Establece la fecha al final de la unidad de tiempo (por ejemplo, último día del mes).</td>
+  </tr>
+
+  <!-- Comparaciones -->
+  <tr>
+      <td colspan="3"><center>Comparaciones</center></td>
+  </tr>
+  <tr>
+      <td>Comparar dos fechas</td>
+      <td> `DateTime.equals()`</td>
+      <td>Compara dos objetos DateTime para ver si son iguales.</td>
+  </tr>
+  <tr>
+      <td>Comprobar si es anterior a otra fecha</td>
+      <td> `DateTime.isBefore()`</td>
+      <td>Verifica si una fecha es anterior a otra.</td>
+  </tr>
+  <tr>
+      <td>Comprobar si es posterior a otra fecha</td>
+      <td> `DateTime.isAfter()`</td>
+      <td>Verifica si una fecha es posterior a otra.</td>
+  </tr>
+  <tr>
+      <td>Comprobar si las fechas son iguales en una unidad</td>
+      <td> `DateTime.hasSame()`</td>
+      <td>Verifica si dos fechas tienen el mismo componente (día, mes, año, etc.).</td>
+  </tr>
+
+  <!-- Zonas horarias -->
+  <tr>
+      <td colspan="3"><center>Zonas horarias</center></td>
+  </tr>
+  <tr>
+      <td>Establecer zona horaria</td>
+      <td> `DateTime.setZone()`</td>
+      <td>Establece la zona horaria de la fecha.</td>
+  </tr>
+  <tr>
+      <td>Obtener el nombre de la zona horaria</td>
+      <td> `DateTime.zoneName`</td>
+      <td>Obtiene el nombre de la zona horaria (por ejemplo, "America/New_York").</td>
+  </tr>
+  <tr>
+      <td>Obtener el desplazamiento en minutos</td>
+      <td> `DateTime.offset`</td>
+      <td>Obtiene el desplazamiento de la zona horaria en minutos (por ejemplo, -300 para GMT-5).</td>
+  </tr>
+
+  <!-- Validación -->
+  <tr>
+      <td colspan="3"><center>Válido y no válido</center></td>
+  </tr>
+  <tr>
+      <td>Verificar si es válido</td>
+      <td> `DateTime.isValid`</td>
+      <td>Verifica si un objeto DateTime es válido.</td>
+  </tr>
+  <tr>
+      <td>Crear objeto DateTime inválido</td>
+      <td> `DateTime.invalid`</td>
+      <td>Marca un objeto DateTime como inválido.</td>
+  </tr>
+</table>    
+<p>EJEMPLO DE USO DE LUXON</p>
+<div class="reloj">
+  <div id="hora" class="hora"></div>
+  <div id="fecha" class="fecha"></div>
+  <div id="zona" class="zona"></div>
+
+  <br>
+  
+    <!-- React DOM -->
+  
+      <p>React DOM <br>
+        React es una biblioteca de JavaScript creada por Facebook para construir interfaces de usuario interactivas. React DOM es el módulo que permite renderizar los componentes de React en el DOM del navegador.
+        <br>Propósito:
+        <br>Crear interfaces dinámicas y reactivas. Es ideal para aplicaciones de una sola página (SPA) donde la actualización de contenido ocurre sin recargar la página.<br>
+      <a href="https://legacy.reactjs.org/docs/react-dom.html" target="_blank">DOCUMENTACION</a></p>
+      <div id="react-example"></div>
+    
+    <!-- Vue.js -->
+    
+      <p>Vue.js<BR>
+        Vue.js es un framework progresivo de JavaScript para la creación de interfaces de usuario. Su enfoque es sencillo pero escalable, adecuado tanto para proyectos pequeños como grandes.
+       <BR> Propósito:
+        Facilitar la vinculación de datos y vistas mediante su sistema de reactividad.
+      <BR><a href="https://vuejs.org/" target="_blank">DOCUMENTACION</a></p>
+      <div id="vue-example" >
+        <h3>{{ message }}</h3>
+      </div>
+  
+
+    <!-- Bootstrap -->
+    
+      <p>Bootstrap
+        <BR>Bootstrap es un framework CSS con componentes predefinidos y estilos que permiten diseñar páginas web responsivas de manera rápida y sencilla.
+<BR>Propósito:
+<BR>Simplificar el diseño web y hacerlo responsivo, asegurando compatibilidad con dispositivos móviles.
+    <BR><a href="https://getbootstrap.com/" target="_blank">DOCUMENTACION</a>  </p>
+      <button class="btn btn-primary">¡Soy un botón de Bootstrap!</button>
+    
+
+    <!-- D3.js -->
+   
+      <p>D3.js<br>
+        D3.js es una biblioteca para crear visualizaciones de datos dinámicas e interactivas usando HTML, SVG y CSS.
+      <br>  Propósito:
+        <br>Convertir datos en gráficos, mapas y visualizaciones personalizadas.<br>
+        en caso de que quieran hacer otra figura les dejare el ejemplo del circulo:
+        <pre><code>
+          // Ejemplo de D3.js
+          const svg = d3.select("#d3-example");
+          svg.append("circle")
+             .attr("cx", 100)
+             .attr("cy", 100)
+             .attr("r", 50)
+             .attr("fill", "blue");
+              </code></pre> 
+
+      <br><a href="https://d3js.org/" target="_blank">DOCUMENTACION</a></p>
+      <svg id="d3-example" width="400" height="200"></svg><br><br>
+      <h1 id="score">Encuentra la salida del laberinto</h1>
+      <div id="game-container"></div>
+    <!-- Axios -->
+
+      <p>Axios<br>
+        Axios es una biblioteca para realizar solicitudes HTTP desde el navegador o Node.js, simplificando el manejo de datos remotos.
+       <br> Propósito:
+        <br>Facilitar la comunicación con servidores o APIs para obtener o enviar datos.
+      <br> <a href="https://axios-http.com/" target="_blank">DOCUMENTACION</a></p>
+      <button id="axios-btn" class="btn btn-success">Obtener Datos</button>
+      <pre id="axios-output" style="background-color: #f8f9fa; padding: 10px;"></pre>
+
+    <!-- Font Awesome -->
+
+      <p>Font Awesome<br>
+        Font Awesome es una colección de íconos vectoriales que se pueden utilizar en sitios web, facilitando la integración de gráficos visuales en aplicaciones web.
+        <br>Propósito:
+        Añadir íconos visuales como botones, menús y otros elementos gráficos en la interfaz de usuario.
+      <br><a href="https://fontawesome.com/" target="_blank">DOCUMENTACION</a><br>
+      Ejemplo de un ícono de Font Awesome</p>
+      <i class="fas fa-star fa-3x"></i>
+      
+   
+  </div>
+</div>
+<script>
+  // React DOM Example
+  const ReactApp = () => React.createElement('h3', null, '¡Hola desde React!');
+  ReactDOM.render(React.createElement(ReactApp), document.getElementById('react-example'));
+
+  // Vue.js Example
+  new Vue({
+    el: '#vue-example',
+    data: {
+      message: '¡Hola desde Vue.js!'
+    }
+  });
+
+  // D3.js Example
+  const svg = d3.select("#d3-example");
+  svg.append("circle")
+     .attr("cx", 100)
+     .attr("cy", 100)
+     .attr("r", 50)
+     .attr("fill", "blue");
+
+  // Axios Example
+  document.getElementById('axios-btn').addEventListener('click', async () => {
+    try {
+      const response = await axios.get('https://jsonplaceholder.typicode.com/posts/1');
+      document.getElementById('axios-output').textContent = JSON.stringify(response.data, null, 2);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+</script>
+<script>
+  const { DateTime } = luxon;
+
+  // Función para actualizar el reloj cada segundo
+  function actualizarReloj() {
+      // Obtener la hora actual en la zona horaria local
+      const ahora = DateTime.now();
+
+      // Mostrar la hora en formato 24 horas
+      const hora = ahora.toFormat('HH:mm:ss');
+      document.getElementById('hora').textContent = hora;
+
+      // Mostrar la fecha actual en formato: Día, Mes, Año
+      const fecha = ahora.toFormat('cccc, dd LLL yyyy');
+      document.getElementById('fecha').textContent = fecha;
+
+      // Mostrar la zona horaria (por ejemplo, GMT-3)
+      const zona = ahora.toFormat('ZZ');
+      document.getElementById('zona').textContent = `Zona: ${zona}`;
+  }
+
+  // Actualizar el reloj inmediatamente y luego cada segundo
+  actualizarReloj();
+  setInterval(actualizarReloj, 1000);
+</script>
+</div> 
+
+    <script type="text/javascript">
+      // Crear un componente funcional de React
+      const App = () => {
+        // Estado para la lista de elementos
+        const [items, setItems] = React.useState([]);
+        // Estado para el texto del formulario
+        const [newItem, setNewItem] = React.useState('');
+  
+        // Función para agregar un nuevo elemento a la lista
+        const addItem = () => {
+          if (newItem) {
+            setItems([...items, newItem]);
+            setNewItem('');  // Limpiar el campo de entrada
+          }
+        };
+  
+        // Función para manejar el cambio en el input
+        const handleInputChange = (event) => {
+          setNewItem(event.target.value);
+        };
+  
+        // Crear los elementos visuales usando React.createElement
+        return React.createElement('div', null, 
+          React.createElement('h1', null, 'Lista de Tareas'),
+          React.createElement('input', { 
+            type: 'text', 
+            value: newItem, 
+            onChange: handleInputChange, 
+            placeholder: 'Escribe una tarea...' 
+          }),
+          React.createElement('button', { onClick: addItem }, 'Agregar tarea'),
+          
+          // Mostrar la lista de tareas
+          React.createElement('ul', null, 
+            items.map((item, index) => 
+              React.createElement('li', { key: index }, item)
+            )
+          )
+        );
+      };
+  
+      // Renderizar el componente en el div con id "root"
+      ReactDOM.render(React.createElement(App), document.getElementById('root'));
+    </script>
+  </section>
+<!--esto script es para hacer dinamica la informacion y pueda abrir y cerrarse-->
+  <script>
+function abrir(infoId){
+  var info = document.getElementById(infoId);
+  if(info.style.display === "none"){
+    info.style.display = "block";
+  }else{
+    info.style.display = "none";
+  }
+}
+
+  </script>
+
+  <!-- Sección de la consola -->
+  <section id="practicalibre">
+    <h3  class="titulo" onclick="abrir('info4')">PRACTICA DE CAMBIOS DE ESTILOS CON JAVASCRIPT</h3>
+    <div class="info" id="info4">
+      <p>En este espacio podras practicar lo que tu quieras a tu gusto con las librerias o practicar algo con javascript<br>
+      Aqui dare un ejemplo de como se puede utilizar estos id tengan en cuenta que no en todos se puede modificar lo mismo pero esto lo pueden ir averiguando poco a poco<br>
+      <pre>
+        document.getElementById('editor').style.backgroundColor = '#f0f8ff';
+            </pre>
+    </p>
+      <table>
+        <thead>
+            <tr>
+                <th>Elemento</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>&lt;nav&gt;</td><td>nav</td></tr>
+            <tr><td>&lt;button&gt;</td><td>menu-button</td></tr>
+            <tr><td>&lt;ul&gt;</td><td>nav-links</td></tr>
+            <tr><td>&lt;button&gt;</td><td>sidePanelButton</td></tr>
+            <tr><td>&lt;div&gt;</td><td>sidePanel</td></tr>
+            <tr><td>&lt;textarea&gt;</td><td>editor</td></tr>
+            <tr><td>&lt;div&gt;</td><td>console</td></tr>
+            <tr><td>&lt;button&gt;</td><td>runButton</td></tr>
+            <tr><td>&lt;button&gt;</td><td>closeSidePanelButton</td></tr>
+            <tr><td>&lt;button&gt;</td><td>toggleConsoleButton</td></tr>
+            <tr><td>&lt;section&gt;</td><td>inicio</td></tr>
+            <tr><td>&lt;img&gt;</td><td>galleryImage</td></tr>
+            <tr><td>&lt;h3&gt;</td><td>info1</td></tr>
+            <tr><td>&lt;h3&gt;</td><td>info2</td></tr>
+            <tr><td>&lt;h3&gt;</td><td>info3</td></tr>
+            <tr><td>&lt;h3&gt;</td><td>info4</td></tr>
+            <tr><td>&lt;canvas&gt;</td><td>myChart</td></tr>
+            <tr><td>&lt;canvas&gt;</td><td>mypr</td></tr>
+            <tr><td>&lt;h1&gt;</td><td>animartexto</td></tr>
+            <tr><td>&lt;div&gt;</td><td>root</td></tr>
+            <tr><td>&lt;div&gt;</td><td>react-example</td></tr>
+            <tr><td>&lt;div&gt;</td><td>vue-example</td></tr>
+            <tr><td>&lt;svg&gt;</td><td>d3-example</td></tr>
+            <tr><td>&lt;button&gt;</td><td>axios-btn</td></tr>
+            <tr><td>&lt;pre&gt;</td><td>axios-output</td></tr>
+        </tbody>
+    </table>
+    </div>
+   
+  </div>
+  </section>
+
+
+  <script>
+  // JavaScript para el menú hamburguesa
+const menuButton = document.getElementById('menu-button');
+const navLinks = document.getElementById('nav-links');
+
+menuButton.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+});
+
+// Funcionalidad del editor y consola
+const editor = document.getElementById('editor');
+const consoleDiv = document.getElementById('console');
+const runButton = document.getElementById('runButton');
+const toggleConsoleButton = document.getElementById('toggleConsoleButton');
+
+// Función para limpiar la consola
+function clearConsole() {
+  consoleDiv.innerHTML = '';
+}
+
+// Función para escribir en la consola personalizada
+function writeToConsole(output) {
+  const outputDiv = document.createElement('div');
+  outputDiv.textContent = output;
+  consoleDiv.appendChild(outputDiv);
+}
+
+// Interceptar console.log para redirigir las salidas a la consola personalizada
+(function() {
+  const originalConsoleLog = console.log;
+  console.log = function(...args) {
+    const msg = args.join(' ');
+    writeToConsole(msg);
+    originalConsoleLog.apply(console, args); // Mantener la funcionalidad original
+  };
+})();
+
+// Función para ejecutar el código
+function ejecutarCodigo() {
+  clearConsole(); // Limpia la consola antes de ejecutar el nuevo código
+  const codigo = editor.value; // Obtiene el código del editor
+  try {
+    // Crear una nueva función a partir del código
+    const fn = new Function(codigo);
+
+    // Ejecutar la función
+    const resultado = fn();
+    
+    // Si hay un resultado que no sea undefined, mostrarlo
+    if (resultado !== undefined) {
+      writeToConsole('Resultado: ' + resultado);
+    } else {
+      writeToConsole('Código ejecutado sin errores.');
+    }
+  } catch (error) {
+    // Muestra el error en caso de que ocurra
+    writeToConsole('Error: ' + error.message);
+  }
+}
+
+// Ejecutar el código cuando se presione el botón "Ejecutar"
+runButton.addEventListener('click', ejecutarCodigo);
+
+// Funcionalidad para mostrar/ocultar la consola
+toggleConsoleButton.addEventListener('click', () => {
+  if (consoleDiv.style.display === "none") {
+    consoleDiv.style.display = "block"; // Mostrar la consola
+    toggleConsoleButton.textContent = "Ocultar Consola";
+  } else {
+    consoleDiv.style.display = "none"; // Ocultar la consola
+    toggleConsoleButton.textContent = "Mostrar Consola";
+  }
+});
+
+// Funcionalidad del panel lateral
+const sidePanel = document.getElementById('sidePanel');
+const sidePanelButton = document.getElementById('sidePanelButton');
+const closeSidePanelButton = document.getElementById('closeSidePanelButton');
+
+sidePanelButton.addEventListener('click', () => {
+  sidePanel.classList.add('open'); // Abre el panel lateral
+  sidePanelButton.style.display = 'none'; // Oculta el botón de abrir cuando el panel está abierto
+});
+
+closeSidePanelButton.addEventListener('click', () => {
+  sidePanel.classList.remove('open'); // Cierra el panel lateral
+  sidePanelButton.style.display = 'block'; // Muestra el botón de abrir de nuevo
+});
+
+  </script>
+
+</body>
+</html>
